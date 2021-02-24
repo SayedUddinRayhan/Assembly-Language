@@ -18,7 +18,13 @@ main proc
     
     mov ah,1
     int 21h
-    mov bl,al
+    mov bl,al  
+    
+    MOV AH, 2
+    MOV DL, 0DH
+    INT 21H
+    mov dl,0ah
+    int 21h
     
     mov ah,9
     lea dx,b
@@ -27,6 +33,12 @@ main proc
     mov ah,1
     int 21h
     mov bh,al
+    
+    MOV AH, 2
+    MOV DL, 0DH
+    INT 21H
+    mov dl,0ah
+    int 21h
     
     mov ah,9
     lea dx,c
