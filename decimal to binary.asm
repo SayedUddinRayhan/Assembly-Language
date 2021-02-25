@@ -1,79 +1,98 @@
-;8086 program to convert a 16 bit decimal number to binary 
-    .MODEL SMALL 
-    .STACK 100H 
-    .DATA 
-        d1 dw 16 
-    .CODE 
-        MAIN PROC FAR 
-            MOV AX, 
-    @DATA 
-        MOV DS, 
-    AX 
+.model small
+.stack 100h
+.data
+
+     msg   db  'Enter a decimal number:$'
+     msg1  db   0dh,0ah,'Invalid entry $'
+     msg2  db   0dh,0ah,'Its equivalent binary is:$'
+
+.code
+
+main proc
+
+   mov ax,@data
+   mov ds,ax
   
-;load the value stored; 
-in variable d1 
-    mov ax, 
-    d1 
-  
-;convert the value to binary; 
-print the value 
-    CALL PRINT 
-  
-;interrupt to exit
-    MOV AH, 
-    4CH INT 21H 
-  
-    MAIN ENDP 
-        PRINT PROC 
-  
-;initilize count 
-    mov cx, 
-    0 mov dx, 0 label1:; 
-if
-    ax is zero 
-        cmp ax, 
-        0 je print1 
-  
-;initilize bx to 2 mov bx, 2 
-  
-;devide it by 2 
-;to convert it to binary 
-    div bx 
-  
-;push it in the stack 
-    push dx 
-  
-;increment the count 
-    inc cx 
-  
-;set dx to 0 
-    xor dx, 
-    dx 
-        jmp label1 
-            print1: 
-  
-;check if count 
-;is greater than zero 
-    cmp cx, 
-    0 je exit
-  
-;pop the top of stack 
-    pop dx 
-  
-;add 48 so that it 
-;represents the ASCII 
-;value of digits 
-    add dx, 
-    48 
-  
-;interrupt to print a 
-;character 
-    mov ah, 
-    02h int 21h 
-  
-;decrease the count 
-    dec cx 
-        jmp print1 
-            exit : ret 
-                       PRINT ENDP 
-                           END MAIN 
+   lea dx,msg
+   mov ah,9     
+   int 21h
+
+   mov ah,1
+   int 21h      
+
+   cmp al,30h   
+   jnge invalid  
+    
+
+   cmp al,39h
+   jnle invalid
+
+   lea dx,msg2  
+   mov ah,9
+   int 21h
+
+   and al,0fh   
+   mov cl,3     
+
+   mov bl,al    
+   mov bh,bl    
+
+   shr bh,cl   
+   add bh,30h   
+ 
+   mov ah,2     
+   mov dl,bh
+   int 21h
+
+   xor bh,bh    
+   mov bh,bl   
+
+   mov cl,2     
+   and bh,04h   
+ 
+   shr bh,cl
+   add bh,30h
+
+   mov ah,2     
+   mov dl,bh
+   int 21h 
+
+   xor bh,bh
+   mov bh,bl
+
+   and bh,02h   
+   shr bh,1
+
+   add bh,30h
+ 
+   mov ah,2     
+   mov dl,bh
+   int 21h
+
+   xor bh,bh
+   mov bh,bl    
+ 
+   and bh,01h   
+   add bh,30h
+
+   mov ah,2     
+   mov dl,bh
+   int 21h
+ 
+   jmp exit
+
+ 
+invalid:
+
+   lea dx,msg1   
+   mov ah,9
+   int 21h
+
+exit:
+ 
+   mov ah,4ch
+   int 21h
+ 
+   main endp
+
+end main
