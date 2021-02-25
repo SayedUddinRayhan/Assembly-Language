@@ -2,10 +2,12 @@ include 'emu8086.inc'
 .model small 
 .stack 100h
 .data
+    
 .code
 main proc
-    mov bx,0
     
+    mov bx,0
+  
     mov ah,1
     for1:
     int 21h
